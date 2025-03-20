@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_prototipo_1/login_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -23,6 +26,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home Page"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout), // Ícono de cerrar sesión
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+                (route) => false,
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(

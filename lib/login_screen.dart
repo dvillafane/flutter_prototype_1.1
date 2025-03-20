@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_prototipo_1/home_screen.dart';
 import 'package:flutter_prototipo_1/register_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_button/sign_button.dart';
+import 'forgot_password_screen.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -46,6 +49,18 @@ class _LoginState extends State<LoginPage> {
     }
   }
 
+  Future<UserCredential> _signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+
+    final AuthCredential credentials = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credentials);
+  }
+
   String _getErrorMessage(String code) {
     switch (code) {
       case 'user-not-found':
@@ -65,7 +80,7 @@ class _LoginState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    const backgroundColor = Color(0xFFF0F2F5);
+    const backgroundColor = Color(0xFFE3F2FD);
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Center(
@@ -74,6 +89,11 @@ class _LoginState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 20),
+              Text(
+                "Prototipo Flutter",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 40),
               Form(
                 key: _formKey,
@@ -103,8 +123,10 @@ class _LoginState extends State<LoginPage> {
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
-                  /* TODO Aqui podrías implementar la logica para "¿Has olvidado la contraseña?"
-                  como redirigir a otra pantalla de recuperacion */
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ForgotPasswordScreen()),
+                  );
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black54,
@@ -112,7 +134,6 @@ class _LoginState extends State<LoginPage> {
                 child: const Text('¿Has olvidado la contraseña?'),
               ),
               const SizedBox(height: 40),
-              // Botón para Crear cuenta nueva
               _CreateAccountButton(
                 onPressed: () {
                   Navigator.push(
@@ -121,6 +142,19 @@ class _LoginState extends State<LoginPage> {
                   );
                 },
               ),
+              const SizedBox(height: 20),
+              // Botón de Google
+              SignInButton(
+                  buttonType: ButtonType.google,
+                  onPressed: () async {
+                    await _signInWithGoogle();
+                    if (FirebaseAuth.instance.currentUser != null) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          (Route<dynamic> route) => false);
+                    }
+                  })
             ],
           ),
         ),
