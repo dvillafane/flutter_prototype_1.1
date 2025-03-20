@@ -59,7 +59,7 @@ class _RegisterState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    const backgroundColor = Color(0xFFF0F2F5);
+    const backgroundColor = Color(0xFFE3F2FD);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -123,7 +123,7 @@ class _EmailInput extends StatelessWidget {
       decoration: const InputDecoration(
         filled: true,
         fillColor: Colors.white,
-        labelText: 'Móvil o correo electrónico',
+        labelText: 'Correo electrónico',
         border: OutlineInputBorder(),
       ),
       keyboardType: TextInputType.emailAddress,
