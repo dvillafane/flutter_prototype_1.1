@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_prototipo_1/home_screen.dart';
-import 'package:flutter_prototipo_1/register_screen.dart';
+import 'package:flutter_prototipo_1/screens/home_screen.dart';
+import 'package:flutter_prototipo_1/screens/register_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_button/sign_button.dart';
 import 'forgot_password_screen.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginState();
 }
